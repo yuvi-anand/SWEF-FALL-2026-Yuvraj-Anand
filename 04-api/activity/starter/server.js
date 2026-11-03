@@ -45,12 +45,42 @@ app.get("/books/:id", (req, res) => {
 
 app.post("/books", (req, res) => {
   // TODO: title/author from req.body; 400 if missing; push; 201
-  res.status(501).json({ error: "POST /books not implemented yet" });
+
+  const { title, author } = req.body;
+  if (!title || !author){
+    res.status(400).json({error: "POST: must have a title & author"})
+  }
+
+  const book = { id: books.length + 1, title, author };
+  books.push(book);
+
+
+  
+  
+  
+  res.status(201).json(newBook)
 });
 
 app.put("/books/:id", (req, res) => {
   // TODO: find by id; 404 if missing; update from req.body; 200
-  res.status(501).json({ error: "PUT /books/:id not implemented yet" });
+
+
+
+    const book = books.find(b => b.id === Number(req.params.id));
+
+    if (!book) return res.status(404).json({ error: "not found" });
+    Object.assign(book, req.body);
+    res.status(200).json(book);
+
+
+    res.status(501).json({ error: "PUT /books/:id not implemented yet" });
+
+
+
+
+
+
+
 });
 
 app.delete("/books/:id", (req, res) => {
